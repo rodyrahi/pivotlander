@@ -1,14 +1,19 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+
+templates = Jinja2Templates(directory="templates")
+
+
 
 app = FastAPI()
 
 @app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+def read_root(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="index.html", context={"id": id}
+    )
 
 if __name__ == "__main__":
     import uvicorn
