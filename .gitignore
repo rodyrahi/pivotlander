@@ -8,3 +8,4 @@ wheels/
 
 # Virtual environments
 .venv
+static/phi-3-mini-4k-instruct.Q4_K_M.gguf
