@@ -48,6 +48,19 @@ def download_model(model_name: str):
         media_type="application/octet-stream",
         filename=model_name
     )
+@app.get("/download/test/build/{build_name}")
+def download_build(build_name: str):
+    path = f"/static/build/{build_name}"
+
+    return FileResponse(
+        path,
+        media_type="application/octet-stream",
+        filename=build_name
+    )
+
+
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=3000)
