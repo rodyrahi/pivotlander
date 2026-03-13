@@ -31,6 +31,23 @@ def read_models():
     files = os.listdir(models_path)
 
     return {"models": files}
+
+
+from fastapi.responses import FileResponse
+import os
+
+@app.get("/download/{model_name}")
+def download_model(model_name: str):
+    path = f"/static/models/{model_name}"
+
+    if not os.path.exists(path):
+        return {"error": "Model not found"}
+
+    return FileResponse(
+        path,
+        media_type="application/octet-stream",
+        filename=model_name
+    )
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=3000)
