@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -18,6 +20,17 @@ def read_root(request: Request):
         request=request, name="index.html", context={"id": id}
     )
 
+
+@app.get("/models")
+def read_models():
+    models_path = "/static/models"
+
+    if not os.path.exists(models_path):
+        return {"error": "models folder not found"}
+
+    files = os.listdir(models_path)
+
+    return {"models": files}
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=3000)
