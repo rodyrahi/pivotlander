@@ -50,7 +50,7 @@ def download_model(model_name: str):
     )
 @app.get("/download/test/build/{build_name}")
 def download_build(build_name: str):
-    path = f"/static/build/{build_name}"
+    path = f"/static/builds/{build_name}"
 
     return FileResponse(
         path,
