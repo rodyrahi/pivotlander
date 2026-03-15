@@ -1,6 +1,6 @@
 import os
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -58,6 +58,34 @@ def download_build(build_name: str):
         filename=build_name
     )
 
+
+
+BUILD_DIR = "/static/builds"
+
+@app.get("/download/test-build/latest")
+def download_latest_build():
+
+    files = [
+        f for f in os.listdir(BUILD_DIR)
+        if f.endswith(".exe")
+    ]
+
+    if not files:
+        raise HTTPException(status_code=404, detail="No builds found")
+
+    # get latest file based on modification time
+    latest_file = max(
+        files,
+        key=lambda f: os.path.getmtime(os.path.join(BUILD_DIR, f))
+    )
+
+    path = os.path.join(BUILD_DIR, latest_file)
+
+    return FileResponse(
+        path,
+        media_type="application/octet-stream",
+        filename=latest_file
+    )
 
 
 
